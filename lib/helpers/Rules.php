@@ -45,10 +45,17 @@ class Rules
      * an array of validator names. 
      * 
      * @param array $rules          Current rule definition array
-     * @param array $excludeRules   Exclusions
+     * @param array $excludeRules   Filter
      */
     public static function filter(array $rules = [], array $excludeRules = [])
     {
+        if (empty($excludeRules)) {
+            return $rules; // Nothing to remove ==> RETURN original
+        }
+        
+        //
+        // Filter the rules
+        $result = $rules;
         foreach ($result as $rk => &$rv) {
             if (is_array($rv[0])) {
                 foreach ($rv[0] as $fk => $fv) {
@@ -71,6 +78,7 @@ class Rules
                 }
             }
         }
+        return $result;
     }
             
 }
