@@ -1,8 +1,8 @@
-<#-- Standard license template for Abexto Yepa  project files -->
+<#-- Standard license template for Abexto Yepa project files -->
 <#if licenseFirst??>
 ${licenseFirst}
 </#if>
-${licensePrefix}Copyright (c) ${date?date?string("yyyy")}, Andreas Prucha, Abexto - Helicon Software Development
+${licensePrefix}Copyright (c) ${date?date?string("yyyy")}, Andreas Prucha, Abexto (Helicon Software Development)
 ${licensePrefix}All rights reserved.
 ${licensePrefix}
 ${licensePrefix}Redistribution and use in source and binary forms, with or without modification, 
