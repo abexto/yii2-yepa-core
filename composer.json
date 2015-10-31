@@ -1,0 +1,15 @@
+{
+  "name": "abexto/yii2-yepa-core",
+  "description": "Abexto Yii Extension Package Core (EXPERIMENTAL)",
+  "keywords": ["yii", "yii2", "utilities"],
+  "license": "BSD-3-Clause",
+  "authors": [
+    {
+      "name": "Andreas Prucha, Abexto (Helicon Software Development)",
+      "email": "prucha@helicon.co.at"
+    }
+  ],
+  "require": {
+    "yiisoft/yii2": "*"
+  }
+}
