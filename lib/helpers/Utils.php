@@ -31,46 +31,45 @@
 namespace abexto\yepa\core\helpers;
 
 /**
- * Static utility class to maniuplate Yii rules
+ * Collection of misc. utility functions
  *
  * @author Andreas Prucha, Abexto - Helicon Software Development
  */
-class Rules
+class Utils
 {
     /**
-     * Removes specific rules from a rule definition array
+     * Normalizes namespace of a PHP idientifier
      * 
-     * The filter is specified as associative array of attributes => validators in the $excludeRules
-     * parameter. The value can be '*' in order to remove all rules for the attribute or a single or 
-     * an array of validator names. 
-     * 
-     * @param array $rules          Current rule definition array
-     * @param array $excludeRules   Filter
+     * @param type $value               Identifier to normalize
+     * @param type $leadingNsSeparator  Ensure that identifer starts (if set to true), 
+     *                                  or does not start with a (if false) with a PHP namespace separator
+     * @param type $trailingNsSeparator Ensure that identifer ends (if set to true), 
+     *                                  or does not start with a (if false) with a PHP namespace separator
+     * @return string
      */
-    public static function filter(array $rules = [], array $excludeRules = [])
+    public function normalizeIdentifierNs($value, $leadingNsSeparator = true, $trailingNsSeparator = false)
     {
-        if (empty($excludeRules)) {
-            return $rules; // Nothing to remove ==> RETURN original
-        }
-        
-        //
-        // Filter the rules
-        $result = $rules;
-        foreach ($result as $rk => &$rd) {
-            $rd[0] = (array)$rd[0];
-                foreach ($rd[0] as $fk => $fv) {
-                    if (array_key_exists($fv, $excludeRules)) {
-                        if (in_array('*', (array)$excludeRules[$fv]) ||
-                                in_array($rd[1], (array)$excludeRules[$fv])) {
-                                unset($rd[0][$fk]);
-                        }
-                    }
-                }
-                if (empty($rd[0])) {
-                    unset($result[$rk]);
-                }
+        $result = trim($value);
+        if (strlen($value) == 0 && ($leadingNsSeparator || $trailingNsSeparator)) {
+            $result = '\\';
+        } else {
+            $result = ($leadingNsSeparator ? '\\' : '').ltrim($value, '\\');
+            $result .= ($trailingNsSeparator ? '\\' : '');
         }
         return $result;
     }
-            
+    
+    /**
+     * Concatenates a PHP namespace with an identifier
+     * 
+     * @param string $aNamespace
+     * @param string $aIdentifier
+     * @return string
+     */
+    public function combineIdentifier($aNamespace, $aIdentifier)
+    {
+        return rtrim($aNamespace, '\\').'\\'.ltrim($aIdentifier, '\\');
+    }
+    
+    
 }

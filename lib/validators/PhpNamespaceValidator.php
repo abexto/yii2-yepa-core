@@ -28,49 +28,27 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace abexto\yepa\core\helpers;
+namespace abexto\yepa\core\validators;
 
 /**
- * Static utility class to maniuplate Yii rules
+ * Description of PhpNamespaceValidator
  *
  * @author Andreas Prucha, Abexto - Helicon Software Development
  */
-class Rules
+class PhpNamespaceValidator extends AbstractPhpIdentifierValidator
 {
     /**
-     * Removes specific rules from a rule definition array
-     * 
-     * The filter is specified as associative array of attributes => validators in the $excludeRules
-     * parameter. The value can be '*' in order to remove all rules for the attribute or a single or 
-     * an array of validator names. 
-     * 
-     * @param array $rules          Current rule definition array
-     * @param array $excludeRules   Filter
+     * @var bool    Specifies if the namespace may end with a PHP namespace separator
      */
-    public static function filter(array $rules = [], array $excludeRules = [])
+    public $trailingNamespaceSeparator = self::CHECK_ALLOWED;
+    
+    public function internalValidateValue(&$value)
     {
-        if (empty($excludeRules)) {
-            return $rules; // Nothing to remove ==> RETURN original
-        }
-        
-        //
-        // Filter the rules
-        $result = $rules;
-        foreach ($result as $rk => &$rd) {
-            $rd[0] = (array)$rd[0];
-                foreach ($rd[0] as $fk => $fv) {
-                    if (array_key_exists($fv, $excludeRules)) {
-                        if (in_array('*', (array)$excludeRules[$fv]) ||
-                                in_array($rd[1], (array)$excludeRules[$fv])) {
-                                unset($rd[0][$fk]);
-                        }
-                    }
-                }
-                if (empty($rd[0])) {
-                    unset($result[$rk]);
-                }
+        $result = parent::validateAttribute($value);
+        if (empty($result) && $this->allowNamespace)
+        if (!$model->hasErrors() && $this->allowNamespace) {
+            $result = $this->validateNsSeparator($model, $attribute, -1, $this->trailingNamespaceSeparator);
         }
         return $result;
     }
-            
 }
